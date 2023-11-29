@@ -27,11 +27,15 @@ M.mason = {
     -- lua stuff
     "lua-language-server",
     "stylua",
-
     -- go stuff
     "gopls",
     "gofumpt",
     "goimports-reviser",
+    -- python stuff
+    "pyright",
+    "black",
+    "mypy",
+    "ruff",
   },
 }
 

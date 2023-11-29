@@ -1,4 +1,5 @@
 apt update
+apt install unzip
 git clone https://github.com/jimydavis/dotfiles
 cd dotfiles
 ./nvim.appimage --appimage-extract

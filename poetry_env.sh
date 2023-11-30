@@ -1,0 +1,3 @@
+export POETRY_CACHE_DIR="/workspace/.poetrycache
+export POETRY_VIRTUALENVS_OPTIONS_ALWAYS_COPY=true
+export POETRY_VIRTUALENVS_IN_PROJECT=true

@@ -11,6 +11,7 @@ M.treesitter = {
     "tsx",
     "c",
     "go",
+    "python",
     "markdown",
     "markdown_inline",
   },
@@ -36,6 +37,7 @@ M.mason = {
     "black",
     "mypy",
     "ruff",
+    "isort",
   },
 }
 

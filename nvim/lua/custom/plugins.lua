@@ -44,6 +44,14 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     opts = overrides.nvimtree,
   },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      local cmp_conf = require "plugins.configs.cmp"
+      cmp_conf.performance = { debounce = 1000, throttle = 1000, fetching_timeout = 1000, confirm_resolve_timeout = 1000, max_view_entries = 3 }
+      return cmp_conf
+    end,
+  },
 
   -- Install a plugin
   {
@@ -53,7 +61,9 @@ local plugins = {
       require("better_escape").setup()
     end,
   },
-
+  {
+    "tpope/vim-commentary",
+  },
   -- To make a plugin not be loaded
   -- {
   --   "NvChad/nvim-colorizer.lua",

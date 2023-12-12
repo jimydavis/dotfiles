@@ -58,10 +58,6 @@ local plugins = {
     end,
   },
   {
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
-  },
-  {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
@@ -69,15 +65,13 @@ local plugins = {
     end,
   },
   {
-    "tpope/vim-commentary",
-  },
-  {
     "rcarriga/nvim-dap-ui",
     dependencies = "mfussenegger/nvim-dap",
-    config = function()
+    opts = overrides.dapui,
+    config = function(_, opts)
       local dap = require "dap"
       local dapui = require "dapui"
-      dapui.setup()
+      require("dapui").setup(opts)
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
@@ -91,8 +85,8 @@ local plugins = {
   },
   {
     "mfussenegger/nvim-dap",
+    dependencies = "rcarriga/nvim-dap-ui",
     config = function()
-      require("core.utils").load_mappings "dap"
       local dap = require "dap"
       dap.adapters.python = function(cb, config)
         if config.request == "attach" then
@@ -111,7 +105,7 @@ local plugins = {
         else
           cb {
             type = "executable",
-            command = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python",
+            command = "/root/.local/share/nvim/mason/packages/debugpy/venv/bin/python",
             args = { "-m", "debugpy.adapter" },
             options = {
               source_filetype = "python",
@@ -130,16 +124,9 @@ local plugins = {
           -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
 
           program = "${file}", -- This configuration will launch the current file if used.
+          console = "integratedTerminal",
           pythonPath = function()
-            -- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
-            -- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
-            -- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
-            local cwd = vim.fn.getcwd()
-            if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
-              return cwd .. "/venv/bin/python"
-            elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
-              return cwd .. "/.venv/bin/python"
-            end
+            return os.getenv "VIRTUAL_ENV" .. "/bin/python"
           end,
         },
       }

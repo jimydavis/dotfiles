@@ -9,9 +9,10 @@ local autocmd = vim.api.nvim_create_autocmd
 
 autocmd("VimEnter", {
   callback = function()
-    vim.cmd("vsplit")
-    vim.cmd("NvimTreeToggle")
-    vim.cmd("wincmd =")
+    vim.cmd "vsplit"
+    vim.cmd "NvimTreeToggle"
+    vim.cmd "wincmd ="
   end,
 })
 
+vim.cmd "set clipboard=unnamedplus"

@@ -48,6 +48,10 @@ local options = {
   completion = {
     completeopt = "menu,menuone",
   },
+  -- performance = {
+  --   debounce = 10000,
+  --   throttle = 10000,
+  -- },
 
   window = {
     completion = {

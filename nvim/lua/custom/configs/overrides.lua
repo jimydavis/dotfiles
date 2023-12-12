@@ -38,6 +38,7 @@ M.mason = {
     "mypy",
     "ruff",
     "isort",
+    "debugpy",
   },
 }
 

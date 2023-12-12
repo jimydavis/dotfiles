@@ -1,4 +1,4 @@
-local overrides = require("custom.configs.overrides")
+local overrides = require "custom.configs.overrides"
 
 ---@type NvPluginSpec[]
 local plugins = {
@@ -8,11 +8,11 @@ local plugins = {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-     "jose-elias-alvarez/null-ls.nvim",
-     config = function()
-       require "custom.configs.null-ls"
-     end,
-   },
+      "jose-elias-alvarez/null-ls.nvim",
+      config = function()
+        require "custom.configs.null-ls"
+      end,
+    },
     -- format & linting
     config = function()
       require "plugins.configs.lspconfig"
@@ -24,15 +24,14 @@ local plugins = {
     dependencies = {
       "tpope/vim-repeat",
     },
-    lazy=false,
+    lazy = false,
     config = function()
-      require('leap').add_default_mappings()
+      require("leap").add_default_mappings()
     end,
   },
-  -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason
+    opts = overrides.mason,
   },
 
   {
@@ -48,12 +47,20 @@ local plugins = {
     "hrsh7th/nvim-cmp",
     opts = function()
       local cmp_conf = require "plugins.configs.cmp"
-      cmp_conf.performance = { debounce = 1000, throttle = 1000, fetching_timeout = 1000, confirm_resolve_timeout = 1000, max_view_entries = 3 }
+      cmp_conf.performance = {
+        debounce = 1000,
+        throttle = 1000,
+        fetching_timeout = 1000,
+        confirm_resolve_timeout = 1000,
+        max_view_entries = 3,
+      }
       return cmp_conf
     end,
   },
-
-  -- Install a plugin
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+  },
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
@@ -64,19 +71,43 @@ local plugins = {
   {
     "tpope/vim-commentary",
   },
-  -- To make a plugin not be loaded
-  -- {
-  --   "NvChad/nvim-colorizer.lua",
-  --   enabled = false
-  -- },
-
-  -- All NvChad plugins are lazy-loaded by default
-  -- For a plugin to be loaded, you will need to set either `ft`, `cmd`, `keys`, `event`, or set `lazy = false`
-  -- If you want a plugin to load on startup, add `lazy = false` to a plugin spec, for example
-  -- {
-  --   "mg979/vim-visual-multi",
-  --   lazy = false,
-  -- }
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = "mfussenegger/nvim-dap",
+    config = function()
+      local dap = require "dap"
+      local dapui = require "dapui"
+      dapui.setup()
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+    config = function(_, opts)
+      require("core.utils").load_mappings "dap"
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap-python",
+    ft = "python",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "rcarriga/nvim-dap-ui",
+    },
+    config = function(_, opts)
+      local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+      require("dap-python").setup(path)
+      require("core.utils").load_mappings "dap_python"
+    end,
+  },
 }
 
 return plugins

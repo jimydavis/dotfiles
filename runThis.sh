@@ -3,7 +3,7 @@
 set -e
 
 apt update
-apt install -y unzip ca-certificates curl gnupg python3-venv htop ncdu pydf
+apt install -y unzip ca-certificates curl gnupg python3-venv htop ncdu pydf ffmpeg
 
 # NodeJs
 mkdir -p /etc/apt/keyrings
